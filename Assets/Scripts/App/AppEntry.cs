@@ -6,14 +6,12 @@ namespace Born.InterviewTest.App
     {
         private App app;
 
-        [SerializeField] private GameObject trackedBodyPrefab; // Reference to the TrackedBody prefab.
+        //[SerializeField] private GameObject trackedBodyPrefab; // Reference to the TrackedBody prefab.
 
         private void Awake()
         {
             app = new App();
 
-            // Instantiate the TrackedBody prefab.
-            Instantiate(trackedBodyPrefab);
 
             DontDestroyOnLoad(this);
         }

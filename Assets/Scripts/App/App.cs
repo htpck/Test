@@ -8,18 +8,29 @@ namespace Born.InterviewTest.App
     /// The class for the application.
     /// This needs to instantiate long running systems and can also be the dependency provider to MonoBehaviour classes.
     /// </summary>
-    public class App
-    {
-        public static App Instance { get; private set; }
-        public TrackedBody TrackedBodyInstance { get; private set; }
-
-        public App()
+    
+        public class App
         {
-            Instance = this;
+            public static App Instance { get; private set; }
+            public static TrackedBody TrackedBodyInstance { get; private set; }
 
-            // Instantiate long-running systems here.
+            public App()
+            {
+                Instance = this;
 
-            Debug.Log("App started.");
+                // Instantiate long-running systems here if needed.
+
+                Debug.Log("App started.");
+            }
+
+            // Method to set the TrackedBody instance.
+            public void SetTrackedBody(TrackedBody trackedBody)
+            {
+                TrackedBodyInstance = trackedBody;
+            }
+        public TrackedBody GetTrackedBody()
+        {
+            return TrackedBodyInstance;
         }
     }
-}
+    }

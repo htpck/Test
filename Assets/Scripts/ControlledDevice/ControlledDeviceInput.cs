@@ -13,18 +13,26 @@ namespace Born.InterviewTest.ControlledDevice
 
         private void UpdateRotation()
         {
-            Born.InterviewTest.BodyTracking.Joint desiredJoint = Born.InterviewTest.BodyTracking.Joint.Head;
-            // Get the TrackedBody instance from the App class.
-            TrackedBody trackedBody = App.App.Instance.TrackedBodyInstance;
-
+            TrackedBody trackedBody = App.App.Instance.GetTrackedBody();
             if (trackedBody != null)
             {
-                // Calculate the rotation needed to face the head joint.
-                Vector3 directionToHead = trackedBody.GetJointPose(desiredJoint).position - transform.position;
-                Quaternion rotationToHead = Quaternion.LookRotation(directionToHead);
+                Vector3 headPosition = trackedBody.GetJointPose(Born.InterviewTest.BodyTracking.Joint.Head).position;
 
-                // Apply the rotation to the ControlledDeviceInput object.
-                transform.rotation = rotationToHead;
+                // Calculate the direction from the current position to the head position
+                Vector3 directionToHead = headPosition - transform.position;
+
+                // Ensure that the direction vector is not zero to avoid division by zero
+                if (directionToHead != Vector3.zero)
+                {
+                    // Calculate the rotation needed to point towards the head position
+                    Quaternion rotationToHead = Quaternion.LookRotation(directionToHead);
+
+                    // Apply the rotation to the object's transform
+                    transform.rotation = rotationToHead;
+                }
+                else
+                { Debug.Log("Tracked Body is null"); }
+
             }
         }
     }

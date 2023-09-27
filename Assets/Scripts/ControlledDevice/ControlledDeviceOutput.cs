@@ -9,29 +9,6 @@ namespace Born.InterviewTest.ControlledDevice
     /// </summary>
     public class ControlledDeviceOutput : MonoBehaviour
     {
-        private DeviceController deviceController;
-
-        private void Start()
-        {
-            // Get the DeviceController component.
-            deviceController = GetComponentInParent<DeviceController>();
-        }
-
-        private void Update()
-        {
-            UpdateRotation();
-        }
-
-        private void UpdateRotation()
-        {
-            if (deviceController != null)
-            {
-                // Get the rotation data from the device controller.
-                Quaternion rotationData = deviceController.GetRotationData();
-
-                // Apply the rotation data to the ControlledDeviceOutput object.
-                transform.rotation = rotationData;
-            }
-        }
+        
     }
 }
