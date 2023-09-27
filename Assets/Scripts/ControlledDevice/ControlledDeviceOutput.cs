@@ -2,13 +2,29 @@ using UnityEngine;
 
 namespace Born.InterviewTest.ControlledDevice
 {
-    /// <summary>
-    /// Turns the attached object into an actual representation of the controlled device.
-    /// This needs to apply the rotation value retrieved from the device to the attached object so that we can observe
-    /// the device rotation on the scene.
-    /// </summary>
     public class ControlledDeviceOutput : MonoBehaviour
     {
-        
+        private DeviceController deviceController;
+
+
+        private void Start()
+        {
+            deviceController = FindObjectOfType<DeviceController>();
+        }
+
+        private void Update()
+        {
+            UpdateRotation();
+        }
+
+        private void UpdateRotation()
+        {
+            // Get the current rotation data from the DeviceController
+            RotationData currentRotationData = deviceController.GetRotationData();
+
+            // Apply the rotation to the object's transform
+            Quaternion rotation = Quaternion.Euler(currentRotationData.xRotation, currentRotationData.yRotation, currentRotationData.zRotation);
+            transform.rotation = rotation;
+        }
     }
 }

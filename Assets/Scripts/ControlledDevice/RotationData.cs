@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class RotationData
-{
-    public Quaternion Rotation { get; set; }
 
-    public RotationData()
+    [System.Serializable]
+    public struct RotationData
     {
-        Rotation = Quaternion.identity;
+        public float xRotation;
+        public float yRotation;
+        public float zRotation;
     }
-}
+
