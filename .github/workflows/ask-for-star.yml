@@ -15,6 +15,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            if (!github.context.payload || !github.context.payload.issue) {
+              console.log('Payload or issue is undefined. Exiting.');
+              process.exit(1);
+            }
+
             const issue = github.context.payload.issue;
             if (issue.labels.some(label => label.name === 'solved')) {
               console.log('Issue is marked as solved. Triggering star request.');
@@ -29,6 +34,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            if (!github.context.payload || !github.context.payload.issue) {
+              console.log('Payload or issue is undefined. Exiting.');
+              process.exit(1);
+            }
+
             const issue = github.context.payload.issue;
             const owner = issue.repository.owner.login;
             const repo = issue.repository.name;
