@@ -1,0 +1,47 @@
+name: Ask for Star on Issue Closure
+
+on:
+  issues:
+    types:
+      - closed
+
+jobs:
+  ask-for-star:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if issue is solved
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = github.context.payload.issue;
+            if (issue.labels.some(label => label.name === 'solved')) {
+              console.log('Issue is marked as solved. Triggering star request.');
+              process.exit(0);
+            } else {
+              console.log('Issue is not marked as solved. No star request needed.');
+              process.exit(1);
+            }
+
+      - name: Comment on Issue
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = github.context.payload.issue;
+            const owner = issue.repository.owner.login;
+            const repo = issue.repository.name;
+            const issueNumber = issue.number;
+
+            const comment = `
+            Thanks for reporting this issue! If it's resolved, consider giving it a ⭐️. 
+            Your support helps us grow. 🚀
+            `;
+
+            await github.issues.createComment({
+              owner,
+              repo,
+              issue_number: issueNumber,
+              body: comment,
+            });
