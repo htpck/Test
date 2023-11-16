@@ -29,16 +29,28 @@ jobs:
               process.exit(1);
             }
 
-      - name: Comment on Issue
+      - name: Check if issue is solved
         uses: actions/github-script@v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            console.log('GitHub context:', github.context);
+            console.log('GitHub payload:', github.context.payload);
+
             if (!github || !github.context || !github.context.payload || !github.context.payload.issue) {
-              console.log('Invalid GitHub context or payload. Exiting.');
-              process.exit(1);
+            console.log('Invalid GitHub context or payload. Exiting.');
+            process.exit(1);
             }
 
+            const issue = github.context.payload.issue;
+            if (issue.labels.some(label => label.name === 'solved')) {
+            console.log('Issue is marked as solved. Triggering star request.');
+            process.exit(0);
+            } else {
+            console.log('Issue is not marked as solved. No star request needed.');
+            process.exit(1);
+            }
+  
             const issue = github.context.payload.issue;
             const owner = issue.repository.owner.login;
             const repo = issue.repository.name;
