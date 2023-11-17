@@ -18,6 +18,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          comment-id: ${{ github.event.comment.id }}
           repository: $https://github.com/htpck/Test
           body: |
             Thank you for using our repository! We're glad we could help solve your issue. If you found our repository helpful, please consider giving us a star ⭐ on GitHub: [repository link]
