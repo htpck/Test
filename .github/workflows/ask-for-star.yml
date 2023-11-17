@@ -22,6 +22,6 @@ jobs:
           comment-id: ${{ github.event.comment.id }}
           repository: htpck/Test
           body: |
-            Thank you for using our repository! We're glad we could help solve your issue. If you found our repository helpful, please consider giving us a star ⭐ on GitHub: [repository link]
+            Thank you for using our repository! We're glad we could help solve your issue. If you found our repository helpful, please consider giving us a star ⭐ on GitHub: https://github.com/EvilMindDevs/hms-unity-plugin
 
             Your support helps us continue to improve our repository and provide valuable resources for others.
