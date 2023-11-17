@@ -17,7 +17,8 @@ jobs:
       - name: Add comment to issue
         uses: peter-evans/create-or-update-comment@v2
         with:
-          issue_number: ${{ github.event.issue.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
           body: |
             Thank you for using our repository! We're glad we could help solve your issue. If you found our repository helpful, please consider giving us a star ⭐ on GitHub: [repository link]
 
