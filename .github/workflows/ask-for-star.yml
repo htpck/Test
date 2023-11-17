@@ -1,26 +1,24 @@
-name: Add Star Comment
+name: Add comment to solved and closed issues
 
 on:
   issues:
-    types:
-      - closed
+    types: [closed]
+    labels:
+      - solved
 
 jobs:
-  add-star-comment:
+  add-comment:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Add comment to issue
+        uses: peter-evans/github-issue-comment@v2
         with:
-          node-version: 14
+          issue_number: ${{ github.event.issue.number }}
+          body: |
+            Thank you for using our repository! We're glad we could help solve your issue. If you found our repository helpful, please consider giving us a star ⭐ on GitHub: [repository link]
 
-      - name: Install dependencies
-        run: npm install github-rest-api
-
-      - name: Add star comment
-        run: node .github/scripts/addStarComment.js
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            Your support helps us continue to improve our repository and provide valuable resources for others.
