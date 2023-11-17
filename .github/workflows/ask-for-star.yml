@@ -1,4 +1,4 @@
-name: Ask for Star on Issue Closure
+name: Add Star Comment
 
 on:
   issues:
@@ -6,52 +6,21 @@ on:
       - closed
 
 jobs:
-  ask-for-star:
+  add-star-comment:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check if issue is solved
-        uses: actions/github-script@v5
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            console.log(JSON.stringify(github.context, null, 2));
+          node-version: 14
 
-            const eventName = github.context.eventName;
-            const payload = eventName === 'issues' ? github.context.payload : github.context.payload.issue;
+      - name: Install dependencies
+        run: npm install github-rest-api
 
-            if (!payload) {
-              console.log('Invalid GitHub payload. Exiting.');
-              process.exit(1);
-            }
-
-            const issue = payload.issue;
-            if (issue.labels.some(label => label.name === 'solved')) {
-              console.log('Issue is marked as solved. Triggering star request.');
-              process.exit(0);
-            } else {
-              console.log('Issue is not marked as solved. No star request needed.');
-              process.exit(1);
-            }
-
-      - name: Comment on Issue
-        uses: actions/github-script@v5
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const issue = github.context.payload.issue;
-            const owner = issue.repository.owner.login;
-            const repo = issue.repository.name;
-            const issueNumber = issue.number;
-
-            const comment = `
-            Thanks for reporting this issue! If it's resolved, consider giving it a ⭐️. 
-            Your support helps us grow. 🚀
-            `;
-
-            await github.issues.createComment({
-              owner,
-              repo,
-              issue_number: issueNumber,
-              body: comment,
-            });
+      - name: Add star comment
+        run: node .github/scripts/addStarComment.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
